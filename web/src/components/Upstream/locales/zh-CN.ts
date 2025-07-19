@@ -28,6 +28,7 @@ export default {
   'component.upstream.fields.discovery_type.tooltip': '服务发现类型',
   'component.upstream.fields.discovery_type.placeholder': '请选择服务发现类型',
   'component.upstream.fields.discovery_type.type.dns': 'DNS',
+  'component.upstream.fields.discovery_type.type.consul': 'Consul',
   'component.upstream.fields.discovery_type.type.consul_kv': 'Consul KV',
   'component.upstream.fields.discovery_type.type.nacos': 'Nacos',
   'component.upstream.fields.discovery_type.type.eureka': 'Eureka',
@@ -43,6 +44,12 @@ export default {
   'component.upstream.fields.service_name': '服务名称',
   'component.upstream.fields.service_name.tooltip': '服务名称',
   'component.upstream.fields.service_name.placeholder': '请输入服务名称',
+
+  'component.upstream.fields.discovery_args.metadata_match': '元数据匹配规则',
+  'component.upstream.fields.discovery_args.metadata_match.tooltip': '用于根据节点的元数据进行筛选，多个值可用英文逗号分隔。',
+  'component.global.value.key': '键',
+  'component.global.value.value': '多个值（逗号分隔）',
+  'component.global.add': '添加',
 
   'component.upstream.fields.scheme.tooltip.stream':
     '该类型仅用于 Stream Route，即四层代理。参考文档：https://apisix.apache.org/zh/docs/apisix/stream-proxy/',

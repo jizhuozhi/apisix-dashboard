@@ -28,6 +28,7 @@ export default {
   'component.upstream.fields.discovery_type.tooltip': 'Discovery Type',
   'component.upstream.fields.discovery_type.placeholder': 'Please select the discovery type',
   'component.upstream.fields.discovery_type.type.dns': 'DNS',
+  'component.upstream.fields.discovery_type.type.consul': 'Consul',
   'component.upstream.fields.discovery_type.type.consul_kv': 'Consul KV',
   'component.upstream.fields.discovery_type.type.nacos': 'Nacos',
   'component.upstream.fields.discovery_type.type.eureka': 'Eureka',
@@ -44,6 +45,12 @@ export default {
   'component.upstream.fields.service_name': 'Service Name',
   'component.upstream.fields.service_name.tooltip': 'Service Name',
   'component.upstream.fields.service_name.placeholder': 'Please enter the service name',
+
+  'component.upstream.fields.discovery_args.metadata_match': 'Metadata Match',
+  'component.upstream.fields.discovery_args.metadata_match.tooltip': 'Used to filter nodes by metadata; each value can be a comma-separated list.',
+  'component.global.value.key': 'Key',
+  'component.global.value.value': 'Comma-separated values',
+  'component.global.add': 'Add',
 
   'component.upstream.fields.scheme.tooltip.stream':
     'This type is only used for Stream Route, which is a layer 4 proxy. Reference: https://apisix.apache.org/docs/apisix/stream-proxy/',

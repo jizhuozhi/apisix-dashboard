@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { FormInstance } from 'antd';
-import { Form, Input, Select } from 'antd';
+import type {FormInstance} from 'antd';
+import {Form, Input, Select} from 'antd';
 import React from 'react';
-import { useIntl } from 'umi';
+import {useIntl} from 'umi';
 
 import ServiceDiscoveryArgs from '@/components/Upstream/components/ServiceDiscoveryArgs';
 
@@ -28,24 +28,29 @@ type Props = {
 
 const discoveryType = {
   dns: {},
+  consul: {
+    args: ["metadata_match"]
+  },
   consul_kv: {},
   nacos: {
     args: ['group_name', 'namespace_id'],
   },
-  eureka: {},
+  eureka: {
+    args: ["metadata_match"]
+  },
   kubernetes: {},
 };
 
-const ServiceDiscovery: React.FC<Props> = ({ readonly, form }) => {
-  const { formatMessage } = useIntl();
+const ServiceDiscovery: React.FC<Props> = ({readonly, form}) => {
+  const {formatMessage} = useIntl();
 
   return (
     <React.Fragment>
       <Form.Item
         name="discovery_type"
-        label={formatMessage({ id: 'component.upstream.fields.discovery_type' })}
-        tooltip={formatMessage({ id: 'component.upstream.fields.discovery_type.tooltip' })}
-        rules={[{ required: true }]}
+        label={formatMessage({id: 'component.upstream.fields.discovery_type'})}
+        tooltip={formatMessage({id: 'component.upstream.fields.discovery_type.tooltip'})}
+        rules={[{required: true}]}
       >
         <Select
           disabled={readonly}
@@ -56,7 +61,7 @@ const ServiceDiscovery: React.FC<Props> = ({ readonly, form }) => {
           {Object.keys(discoveryType).map((item) => {
             return (
               <Select.Option key={item} value={item}>
-                {formatMessage({ id: `component.upstream.fields.discovery_type.type.${item}` })}
+                {formatMessage({id: `component.upstream.fields.discovery_type.type.${item}`})}
               </Select.Option>
             );
           })}
@@ -64,22 +69,22 @@ const ServiceDiscovery: React.FC<Props> = ({ readonly, form }) => {
       </Form.Item>
       <Form.Item
         name="service_name"
-        label={formatMessage({ id: 'component.upstream.fields.service_name' })}
-        tooltip={formatMessage({ id: 'component.upstream.fields.service_name.tooltip' })}
-        rules={[{ required: true }, { min: 1 }, { max: 256 }]}
+        label={formatMessage({id: 'component.upstream.fields.service_name'})}
+        tooltip={formatMessage({id: 'component.upstream.fields.service_name.tooltip'})}
+        rules={[{required: true}, {min: 1}, {max: 256}]}
       >
         <Input
           disabled={readonly}
-          placeholder={formatMessage({ id: 'component.upstream.fields.service_name.placeholder' })}
+          placeholder={formatMessage({id: 'component.upstream.fields.service_name.placeholder'})}
         />
       </Form.Item>
       <Form.Item shouldUpdate noStyle>
         {() => {
           if (!form.getFieldValue('discovery_type')) return null;
 
-          const { args } = discoveryType[form.getFieldValue('discovery_type')];
+          const {args} = discoveryType[form.getFieldValue('discovery_type')];
           if (args && args.length > 0) {
-            return <ServiceDiscoveryArgs readonly={readonly} args={args} />;
+            return <ServiceDiscoveryArgs readonly={readonly} args={args}/>;
           }
           return null;
         }}

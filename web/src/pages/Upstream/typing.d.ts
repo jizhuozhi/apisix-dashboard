@@ -18,9 +18,11 @@ declare namespace UpstreamModule {
   type Node = Record<string, number | string>;
   type Type = 'roundrobin' | 'chash' | 'ewma';
   type DiscoveryType = 'dns' | 'consul_kv' | 'nacos' | 'eureka';
+  type KV = { key: string, value: string }
   type DiscoveryArgs = {
     group_name?: string;
     namespace_id?: string;
+    metadata_match?: KV[]
   };
 
   type KeepalivePool = {
