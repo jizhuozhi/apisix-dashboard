@@ -33,12 +33,6 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   settings?: LayoutSettings;
 }> {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    const redirect = getUrlQuery('redirect') || '/';
-    history.replace(`/user/login?redirect=${redirect}`);
-  }
-
   const currentUser = await queryCurrent();
   return {
     currentUser,

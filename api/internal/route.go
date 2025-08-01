@@ -60,12 +60,6 @@ func SetUpRouter() *gin.Engine {
 	// security
 	r.Use(filter.RequestLogHandler(logger), filter.IPFilter(), filter.InvalidRequest())
 
-	// authenticate
-	if conf.OidcEnabled {
-		r.Use(filter.Oidc())
-	}
-	r.Use(filter.Authentication())
-
 	// misc
 	r.Use(gzip.Gzip(gzip.DefaultCompression), filter.CORS(), filter.RequestId(), filter.SchemaCheck(), filter.RecoverHandler())
 	r.Use(static.Serve("/", static.LocalFile(filepath.Join(conf.WorkDir, conf.WebDir), false)))
