@@ -24,11 +24,13 @@ const ipv6RegexExp = new RegExp(
 
 function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
   const result: UpstreamModule.KV[] = [];
-  map.forEach((values, key) => {
-    values.forEach(value => {
-      result.push({ key, value });
+  if (map) {
+    map.forEach((values, key) => {
+      values.forEach(value => {
+        result.push({ key, value });
+      });
     });
-  });
+  }
   return result;
 }
 
