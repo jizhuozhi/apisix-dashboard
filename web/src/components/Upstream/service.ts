@@ -22,24 +22,22 @@ const ipv6RegexExp = new RegExp(
   /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
 );
 
-function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
-  console.log("mapToKVList",map)
-  const result: UpstreamModule.KV[] = [];
-  if (map) {
-    map.forEach((value, key) => {
+function objToKvList(obj: any): any[] {
+  const result: any[] = [];
+  if (obj) {
+    Object.entries(obj).forEach((value, key) => {
       result.push({key, value});
     });
   }
   return result;
 }
 
-function kvListToMap(kvList: UpstreamModule.KV[]): Map<string, string[]> {
-  console.log("kvList",kvList)
-  const map = new Map<string, string[]>();
+function kvListToObj(kvList: any[]): any {
+  const obj: any = {}
   for (const {key, value} of kvList) {
-    map.set(key, value)
+    obj[key]= value
   }
-  return map;
+  return obj;
 }
 
 /**
@@ -115,7 +113,7 @@ export const convertToFormData = (originData: UpstreamComponent.ResponseData) =>
   }
 
   if (data.discovery_args && data.discovery_args.metadata_match) {
-    data.discovery_args.metadata_match = mapToKVList(data.discovery_args.metadata_match)
+    data.discovery_args.metadata_match = objToKvList(data.discovery_args.metadata_match)
   }
 
   return data;
@@ -204,7 +202,10 @@ export const convertToRequestData = (
     if (Array.isArray(data.discovery_args?.metadata_match)) {
       const kvList = data.discovery_args.metadata_match;
       const validKV = kvList.filter(item => item.key && item.value);
-      data.discovery_args.metadata_match = kvListToMap(validKV);
+      data.discovery_args = {
+        ...data.discovery_args,
+        "metadata_match": kvListToObj(validKV)
+      }
     }
     return omit(data, 'upstream_type');
   }
