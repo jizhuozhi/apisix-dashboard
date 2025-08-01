@@ -23,6 +23,7 @@ const ipv6RegexExp = new RegExp(
 );
 
 function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
+  console.log("mapToKVList",map)
   const result: UpstreamModule.KV[] = [];
   if (map) {
     map.forEach((value, key) => {
@@ -33,6 +34,7 @@ function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
 }
 
 function kvListToMap(kvList: UpstreamModule.KV[]): Map<string, string[]> {
+  console.log("kvList",kvList)
   const map = new Map<string, string[]>();
   for (const {key, value} of kvList) {
     map.set(key, value)
