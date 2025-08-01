@@ -22,7 +22,7 @@ declare namespace UpstreamModule {
   type DiscoveryArgs = {
     group_name?: string;
     namespace_id?: string;
-    metadata_match?: KV[]
+    metadata_match?: KV[] | Map<string, string[]>
   };
 
   type KeepalivePool = {

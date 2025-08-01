@@ -22,6 +22,27 @@ const ipv6RegexExp = new RegExp(
   /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
 );
 
+function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
+  const result: UpstreamModule.KV[] = [];
+  map.forEach((values, key) => {
+    values.forEach(value => {
+      result.push({ key, value });
+    });
+  });
+  return result;
+}
+
+function kvListToMap(kvList: UpstreamModule.KV[]): Map<string, string[]> {
+  const map = new Map<string, string[]>();
+  for (const { key, value } of kvList) {
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    map.get(key)!.push(value);
+  }
+  return map;
+}
+
 /**
  * Because we have some `custom` field in Upstream Form, like custom.tls/custom.checks.active etc,
  * we need to transform data that doesn't have `custom` field to data contains `custom` field
@@ -92,6 +113,10 @@ export const convertToFormData = (originData: UpstreamComponent.ResponseData) =>
 
   if (data.discovery_type && data.service_name) {
     data.upstream_type = 'service_discovery';
+  }
+
+  if (data.discovery_args && data.discovery_args.metadata_match) {
+    data.discovery_args.metadata_match = mapToKVList(data.discovery_args.metadata_match)
   }
 
   return data;
@@ -177,6 +202,11 @@ export const convertToRequestData = (
 
   if (upstream_type === 'service_discovery' && discovery_type && service_name) {
     if (!discovery_args) data.discovery_args = {};
+    if (Array.isArray(data.discovery_args?.metadata_match)) {
+      const kvList = data.discovery_args.metadata_match;
+      const validKV = kvList.filter(item => item.key && item.value);
+      data.discovery_args.metadata_match = kvListToMap(validKV);
+    }
     return omit(data, 'upstream_type');
   }
 
