@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { notification } from 'antd';
-import { cloneDeep, isNil, omit, omitBy } from 'lodash';
-import { formatMessage, request } from 'umi';
+import {notification} from 'antd';
+import {cloneDeep, isNil, omit, omitBy} from 'lodash';
+import {formatMessage, request} from 'umi';
 
 const ipv6RegexExp = new RegExp(
   /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
@@ -25,10 +25,8 @@ const ipv6RegexExp = new RegExp(
 function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
   const result: UpstreamModule.KV[] = [];
   if (map) {
-    map.forEach((values, key) => {
-      values.forEach(value => {
-        result.push({ key, value });
-      });
+    map.forEach((value, key) => {
+      result.push({key, value});
     });
   }
   return result;
@@ -36,11 +34,8 @@ function mapToKVList(map: Map<string, string[]>): UpstreamModule.KV[] {
 
 function kvListToMap(kvList: UpstreamModule.KV[]): Map<string, string[]> {
   const map = new Map<string, string[]>();
-  for (const { key, value } of kvList) {
-    if (!map.has(key)) {
-      map.set(key, []);
-    }
-    map.get(key)!.push(value);
+  for (const {key, value} of kvList) {
+    map.set(key, value)
   }
   return map;
 }
@@ -149,7 +144,7 @@ export const convertToRequestData = (
   } = data;
 
   if (!['Custom', 'None'].includes(upstream_id)) {
-    return { upstream_id };
+    return {upstream_id};
   }
 
   data = omit(data, 'upstream_id') as any;
@@ -170,8 +165,8 @@ export const convertToRequestData = (
 
   if (checks?.passive && !checks.active) {
     notification.error({
-      message: formatMessage({ id: 'component.upstream.other.health-check.invalid' }),
-      description: formatMessage({ id: 'component.upstream.other.health-check.passive-only' }),
+      message: formatMessage({id: 'component.upstream.other.health-check.invalid'}),
+      description: formatMessage({id: 'component.upstream.other.health-check.passive-only'}),
     });
     return undefined;
   }
@@ -217,7 +212,7 @@ export const convertToRequestData = (
 
 export const fetchUpstreamList = () => {
   return request<Res<ResListData<UpstreamComponent.ResponseData>>>('/upstreams').then(
-    ({ data }) => ({
+    ({data}) => ({
       data: data.rows.map((row) => convertToFormData(row)),
       total: data.total_size,
     }),
