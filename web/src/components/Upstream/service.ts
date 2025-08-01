@@ -25,7 +25,7 @@ const ipv6RegexExp = new RegExp(
 function objToKvList(obj: any): any[] {
   const result: any[] = [];
   if (obj) {
-    Object.entries(obj).forEach((value, key) => {
+    Object.entries(obj).forEach(([key, value]) => {
       result.push({key, value});
     });
   }
@@ -35,7 +35,7 @@ function objToKvList(obj: any): any[] {
 function kvListToObj(kvList: any[]): any {
   const obj: any = {}
   for (const {key, value} of kvList) {
-    obj[key]= value
+    obj[key] = value
   }
   return obj;
 }
