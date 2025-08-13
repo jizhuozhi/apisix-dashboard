@@ -25,6 +25,7 @@ export enum AlgorithmEnum {
   roundrobin = 'roundrobin',
   ewma = 'ewma',
   least_conn = 'least_conn',
+  subset = 'subset',
 }
 
 export enum HashOnEnum {

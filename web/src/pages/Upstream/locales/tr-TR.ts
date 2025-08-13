@@ -100,6 +100,7 @@ export default {
   'page.upstream.type.chash': 'CHash',
   'page.upstream.type.ewma': 'EWMA',
   'page.upstream.type.least_conn': 'Least conn',
+  'page.upstream.type.subset': 'Subset',
 
   'page.upstream.list.content':
     'Yukarı akış listesi, oluşturulan yukarı akış hizmetlerini (yani arka uç hizmetleri) içerir ve yukarı akış hizmetlerinin birden çok hedef düğümünün yük dengelemesine ve sağlık denetimine izin verir.',

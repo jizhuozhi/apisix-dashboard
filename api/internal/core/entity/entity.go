@@ -169,6 +169,7 @@ type UpstreamDef struct {
 	Checks        interface{}            `json:"checks,omitempty"`
 	HashOn        string                 `json:"hash_on,omitempty"`
 	Key           string                 `json:"key,omitempty"`
+	Subset        interface{}            `json:"subset,omitempty"`
 	Scheme        string                 `json:"scheme,omitempty"`
 	DiscoveryType string                 `json:"discovery_type,omitempty"`
 	DiscoveryArgs map[string]interface{} `json:"discovery_args,omitempty"`
